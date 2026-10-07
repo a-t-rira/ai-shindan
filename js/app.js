@@ -178,7 +178,7 @@
       if (platform === "copy_link") {
         const feedback = document.querySelector("#copy-feedback");
         try {
-          const copyValue = `${post}\\n${pageUrl}`;
+          const copyValue = `${post}\n${pageUrl}`;
           if (navigator.clipboard && window.isSecureContext) {
             await navigator.clipboard.writeText(copyValue);
           } else {
