@@ -273,3 +273,10 @@ h1, p { margin-top: 0; }
 .share-page-description { margin: 12px 0 0; font-size: 1rem; font-weight: 700; line-height: 1.75; }
 .share-page-cta { display: flex; align-items: center; justify-content: center; width: 100%; min-height: 58px; margin-top: 26px; border: 3px solid var(--ink); border-radius: 16px; color: var(--ink); background: var(--yellow); box-shadow: 0 5px 0 var(--ink); font-size: 1.05rem; font-weight: 900; text-decoration: none; }
 .share-page-cta:active { transform: translateY(3px); box-shadow: 0 2px 0 var(--ink); }
+
+
+/* Quiet X follow links */
+.x-follow-link { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 36px; margin: 7px auto 0; padding: 6px 11px; border: 1.5px solid rgb(17 17 17 / 38%); border-radius: 999px; color: #333; background: rgb(255 255 255 / 78%); font-size: .72rem; font-weight: 800; line-height: 1.25; text-decoration: none; box-shadow: 0 2px 0 rgb(17 17 17 / 22%); }
+.x-follow-link:hover { background: white; }
+.x-follow-icon { display: block; flex: 0 0 15px; width: 15px; height: 15px; fill: currentColor; }
+.x-follow-link--page { margin-top: 15px; }
