@@ -1,11 +1,13 @@
 (() => {
   const data = window.AI_SHINDAN_DATA;
+  const SITE_URL = window.AI_SHINDAN_SITE_URL;
   const screens = [...document.querySelectorAll(".screen")];
   const questionCount = data.questions.length;
   let selectedJob = null;
   let answers = [];
   let currentQuestionIndex = 0;
   let latestResult = null;
+  let copyFeedbackTimer = null;
 
   function trackEvent(name, parameters = {}) {
     if (typeof window.gtag === "function") window.gtag("event", name, parameters);
@@ -165,20 +167,51 @@
 
   document.querySelector("#back-question").addEventListener("click", goBack);
 
-  document.querySelector("#share-x").addEventListener("click", () => {
-    if (!selectedJob || !latestResult) return;
-    const { percentage, resultType } = latestResult;
-    trackEvent("x_share", {
-      job_name: selectedJob.label,
-      job_id: selectedJob.id,
-      percent: percentage,
-      result_type: resultType.id
+  document.querySelectorAll("[data-share-platform]").forEach((button) => {
+    button.addEventListener("click", async () => {
+      if (!selectedJob || !latestResult) return;
+      const platform = button.dataset.sharePlatform;
+      const { percentage, resultType } = latestResult;
+      const pageUrl = new URL(`result/${resultType.id}.html`, SITE_URL).toString();
+      const post = `私の仕事、AIに${percentage}%任せられるらしい。タイプは『${resultType.name}』でした #チップ商会診断`;
+      trackEvent("share", { method: platform, job_name: selectedJob.label, job_id: selectedJob.id, percent: percentage, result_type: resultType.id });
+      if (platform === "copy_link") {
+        const feedback = document.querySelector("#copy-feedback");
+        try {
+          const copyValue = `${post}\\n${pageUrl}`;
+          if (navigator.clipboard && window.isSecureContext) {
+            await navigator.clipboard.writeText(copyValue);
+          } else {
+            const field = document.createElement("textarea");
+            field.value = copyValue;
+            field.style.position = "fixed";
+            field.style.opacity = "0";
+            document.body.append(field);
+            field.select();
+            const copied = document.execCommand("copy");
+            field.remove();
+            if (!copied) throw new Error("Clipboard copy failed");
+          }
+          feedback.textContent = "コピーしました";
+          window.clearTimeout(copyFeedbackTimer);
+          copyFeedbackTimer = window.setTimeout(() => { feedback.textContent = ""; }, 1800);
+        } catch (error) {
+          feedback.textContent = "コピーできませんでした";
+        }
+        return;
+      }
+      const destinations = { x: "https://x.com/intent/post", line: "https://social-plugins.line.me/lineit/share", threads: "https://www.threads.net/intent/post", facebook: "https://www.facebook.com/sharer/sharer.php" };
+      const shareUrl = new URL(destinations[platform]);
+      if (platform === "x" || platform === "threads") {
+        shareUrl.searchParams.set("text", post);
+        shareUrl.searchParams.set("url", pageUrl);
+      } else if (platform === "line") {
+        shareUrl.searchParams.set("url", pageUrl);
+      } else if (platform === "facebook") {
+        shareUrl.searchParams.set("u", pageUrl);
+      }
+      window.open(shareUrl.toString(), "_blank", "noopener,noreferrer");
     });
-    const post = `私の仕事、AIに${percentage}%任せられるらしい。タイプは「${resultType.name}」でした #チップ商会診断`;
-    const shareUrl = new URL("https://x.com/intent/post");
-    shareUrl.searchParams.set("text", post);
-    shareUrl.searchParams.set("url", window.location.href);
-    window.open(shareUrl.toString(), "_blank", "noopener,noreferrer");
   });
 
   renderJobs();
