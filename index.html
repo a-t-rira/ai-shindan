@@ -1,6 +1,15 @@
 <!doctype html>
 <html lang="ja">
   <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-72VSSQLHS0"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      window.gtag = gtag;
+      gtag('js', new Date());
+      gtag('config', 'G-72VSSQLHS0');
+    </script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#ffd928">
@@ -74,6 +83,8 @@
             <p class="job-message" id="job-message"></p>
           </div>
           <p class="disclaimer">この診断はネタです。科学的な根拠はありません。</p>
+          <button class="button button--again" id="share-x" type="button">Xでシェア <span aria-hidden="true">↗</span></button>
+          <p class="privacy-note">診断結果は匿名で集計しています</p>
           <button class="button button--again" type="button" data-go="top">もう一度診断 <span aria-hidden="true">↻</span></button>
           <p class="brand"><span class="brand-chip" aria-hidden="true">▦</span> チップ商会</p>
         </div>

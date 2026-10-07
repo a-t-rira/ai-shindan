@@ -5,6 +5,11 @@
   let selectedJob = null;
   let answers = [];
   let currentQuestionIndex = 0;
+  let latestResult = null;
+
+  function trackEvent(name, parameters = {}) {
+    if (typeof window.gtag === "function") window.gtag("event", name, parameters);
+  }
 
   function showScreen(name) {
     screens.forEach((screen) => {
@@ -26,6 +31,7 @@
       button.querySelector(".job-label").textContent = job.label;
       button.addEventListener("click", () => {
         selectedJob = job;
+        trackEvent("job_selected", { job_name: job.label, job_id: job.id });
         answers = [];
         currentQuestionIndex = 0;
         renderQuestion();
@@ -101,6 +107,21 @@
   function showResult() {
     const percentage = calculatePercentage(answers, selectedJob.adjustment);
     const resultType = findResultType(percentage);
+    latestResult = { percentage, resultType };
+
+    trackEvent("diagnosis_complete", {
+      job_name: selectedJob.label,
+      job_id: selectedJob.id,
+      percent: percentage,
+      result_type: resultType.id
+    });
+    const record = { job: selectedJob.label, percent: percentage, type: resultType.id };
+    fetch("https://script.google.com/macros/s/AKfycbxes7hIz7nog72RR-wzHAXmHzmYb-rjrCpO7vkjFdtqVXeGNYERyvTmid2Ls3-hMVte/exec", {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "text/plain" },
+      body: JSON.stringify(record)
+    }).catch(() => {});
     const number = document.querySelector("#result-percentage");
     const typeBubble = document.querySelector("#result-type-bubble");
 
@@ -131,8 +152,10 @@
   document.querySelectorAll("[data-go]").forEach((button) => {
     button.addEventListener("click", () => {
       const destination = button.dataset.go;
+      if (destination === "jobs") trackEvent("diagnosis_start");
       if (destination === "top") {
         selectedJob = null;
+        latestResult = null;
         answers = [];
         currentQuestionIndex = 0;
       }
@@ -141,6 +164,22 @@
   });
 
   document.querySelector("#back-question").addEventListener("click", goBack);
+
+  document.querySelector("#share-x").addEventListener("click", () => {
+    if (!selectedJob || !latestResult) return;
+    const { percentage, resultType } = latestResult;
+    trackEvent("x_share", {
+      job_name: selectedJob.label,
+      job_id: selectedJob.id,
+      percent: percentage,
+      result_type: resultType.id
+    });
+    const post = `私の仕事、AIに${percentage}%任せられるらしい。タイプは「${resultType.name}」でした #チップ商会診断`;
+    const shareUrl = new URL("https://x.com/intent/post");
+    shareUrl.searchParams.set("text", post);
+    shareUrl.searchParams.set("url", window.location.href);
+    window.open(shareUrl.toString(), "_blank", "noopener,noreferrer");
+  });
 
   renderJobs();
   renderQuestion();
