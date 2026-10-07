@@ -217,6 +217,7 @@ h1, p { margin-top: 0; }
 .card-lead { margin: 0; font-size: 1.08rem; font-weight: 900; line-height: 1.45; }
 .job-message { margin: 0; font-size: .88rem; font-weight: 800; line-height: 1.65; }
 .disclaimer { margin: 16px 0 8px; font-size: .72rem; font-weight: 800; }
+.privacy-note { margin: 0 0 8px; color: #666; font-size: .65rem; font-weight: 700; }
 .button--again { width: 100%; min-height: 55px; color: var(--ink); background: white; box-shadow: 0 5px 0 var(--ink); font-size: 1.08rem; }
 .button--again span { color: var(--blue-deep); font-size: 1.3rem; }
 .result-content > .brand { margin-top: 18px; }
