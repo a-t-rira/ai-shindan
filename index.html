@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#ffd928">
+    <meta name="description" content="あなたの仕事、AIに何%任せられる？チップ商会のネタ診断。">
+    <title>あなたの仕事、AIに何%任せられる？ | チップ商会</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/data.js" defer></script>
+    <script src="js/app.js" defer></script>
+  </head>
+  <body>
+    <main class="app-frame" aria-live="polite">
+      <section class="screen screen--top is-active" id="screen-top" aria-labelledby="top-title">
+        <div class="burst burst--top" aria-hidden="true"></div>
+        <div class="screen-content top-content">
+          <div class="speech speech--hero">
+            <h1 id="top-title">あなたの仕事、<br>AIに何%<br>任せられる？</h1>
+          </div>
+          <img class="character character--top" src="assets/chip_surprised.svg" alt="びっくりしたチップくん">
+          <div class="top-actions">
+            <button class="button button--start" type="button" data-go="jobs">診断スタート <span aria-hidden="true">▶</span></button>
+            <p class="duration">全15問・約3分</p>
+          </div>
+        </div>
+        <p class="brand"><span class="brand-chip" aria-hidden="true">▦</span> チップ商会</p>
+      </section>
+
+      <section class="screen screen--jobs" id="screen-jobs" aria-labelledby="jobs-title" hidden>
+        <div class="screen-content">
+          <header class="screen-header">
+            <div class="speech speech--header"><h1 id="jobs-title">まずはあなたの<br>職種を教えて</h1></div>
+          </header>
+          <div class="job-grid" id="job-list" aria-label="職種を選択"></div>
+          <p class="brand brand--bottom"><span class="brand-chip" aria-hidden="true">▦</span> チップ商会</p>
+        </div>
+      </section>
+
+      <section class="screen screen--question" id="screen-question" aria-labelledby="question-title" hidden>
+        <div class="screen-content question-content">
+          <div class="progress-wrap">
+            <span class="progress-label">質問</span>
+            <div class="progress-track" id="question-progress" role="progressbar" aria-label="診断の進捗" aria-valuemin="0" aria-valuemax="15" aria-valuenow="1"><span class="progress-fill" id="progress-fill"></span></div>
+            <span class="progress-count"><span id="question-number">1</span> <i>/ 15</i></span>
+            <img class="character character--thinking" src="assets/chip_thinking.svg" alt="考えるチップくん">
+          </div>
+          <div class="question-panel">
+            <p class="question-kicker">QUESTION <span>01</span></p>
+            <h1 id="question-title"></h1>
+            <span class="panel-star panel-star--one" aria-hidden="true">✦</span>
+            <span class="panel-star panel-star--two" aria-hidden="true">✦</span>
+          </div>
+          <div class="answer-list" id="answer-list" aria-label="回答を選択"></div>
+          <button class="button button--back" id="back-question" type="button"><span aria-hidden="true">←</span> ひとつ戻る</button>
+          <p class="brand"><span class="brand-chip" aria-hidden="true">▦</span> チップ商会</p>
+        </div>
+      </section>
+
+      <section class="screen screen--result" id="screen-result" aria-labelledby="result-title" hidden>
+        <div class="screen-content result-content">
+          <p class="result-intro" id="result-title">あなたの仕事、<br>AIに任せられるのは…</p>
+          <div class="result-number" id="result-percentage" aria-label="結果を計算中"><span>0</span><small>%</small></div>
+          <div class="speech speech--result" id="result-type-bubble"><h1 id="result-type-title"></h1></div>
+          <img class="character character--happy" src="assets/chip_happy.svg" alt="うれしそうなチップくん">
+          <div class="result-card result-card--type">
+            <p class="card-eyebrow">診断タイプ</p>
+            <p class="card-lead" id="result-type-message"></p>
+          </div>
+          <div class="result-card result-card--job">
+            <p class="job-message" id="job-message"></p>
+          </div>
+          <p class="disclaimer">この診断はネタです。科学的な根拠はありません。</p>
+          <button class="button button--again" type="button" data-go="top">もう一度診断 <span aria-hidden="true">↻</span></button>
+          <p class="brand"><span class="brand-chip" aria-hidden="true">▦</span> チップ商会</p>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
+
